@@ -1,0 +1,183 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\ReportForm;
+
+class ReportFormSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $content = [
+            'contentsIndex' => 13,
+            'contents' => [
+                [
+                    'key' => 1,
+                    'title' => '在籍部署（例：HAA〇〇校）',
+                    'contentType' => 'text',
+                    'require' => true,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => false,
+                ],
+                [
+                    'key' => 2,
+                    'title' => '〇/〇日報（日付）',
+                    'contentType' => 'datetime',
+                    'require' => true,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => false,
+                ],
+                [
+                    'key' => 3,
+                    'title' => '今月の個人テーマ',
+                    'contentType' => 'text',
+                    'content' => '',
+                    'require' => true,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => false,
+                ],
+                [
+                    'key' => 4,
+                    'title' => '日計（計画／実績）',
+                    'contentType' => 'text',
+                    'content' => '',
+                    'require' => true,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => false,
+                ],
+                [
+                    'key' => 5,
+                    'title' => '月間（計画／実績）',
+                    'contentType' => 'text',
+                    'content' => '',
+                    'require' => true,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => false,
+                ],
+                [
+                    'key' => 6,
+                    'title' => '累計（計画／実績）',
+                    'contentType' => 'text',
+                    'content' => '',
+                    'require' => true,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => false,
+                ],
+                [
+                    'key' => 7,
+                    'title' => '今日のマインド天気図',
+                    'contentType' => 'tenki',
+                    'content' => '',
+                    'require' => true,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => false,
+                ],
+                [
+                    'key' => 8,
+                    'title' => '本日やったこと',
+                    'contentType' => 'textarea',
+                    'content' => '',
+                    'require' => true,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => true,
+                ],
+                [
+                    'key' => 9,
+                    'title' => '今日の気付き',
+                    'contentType' => 'textarea',
+                    'content' => '',
+                    'require' => true,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => true,
+                ],
+                [
+                    'key' => 10,
+                    'title' => '明日やること',
+                    'contentType' => 'textarea',
+                    'content' => '',
+                    'require' => true,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => false,
+                ],
+                [
+                    'key' => 11,
+                    'title' => '自由コメント',
+                    'contentType' => 'textarea',
+                    'content' => '',
+                    'require' => false,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => true,
+                ],
+                [
+                    'key' => 12,
+                    'title' => '本日の写真',
+                    'contentType' => 'dairyFixImage',
+                    'require' => false,
+                    'checked' => [],
+                    'choices' => [],
+                    'content' => '',
+                    'path' => null,
+                    'time' => '',
+                    'reportVisible' => true,
+                ],
+            ],
+        ];
+        ReportForm::firstOrCreate([
+            'id' => 1,
+            'name' => '5分日報フォーマット',
+            'diary' => $content,
+            'required' => false,
+            'create_by' => 1,
+        ]);
+    }
+}

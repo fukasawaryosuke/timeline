@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true, // <- this add
+        "allowJs": true, // <- this add
+        "target": "esnext",
+        "module": "esnext",
+        "strict": true,
+        "jsx": "preserve",
+        "importHelpers": true,
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true,
+        "sourceMap": false,
+        // any型許可 npm run prod時妥協でfalse
+        "noImplicitAny":false,
+        "baseUrl": ".",
+        "paths": {
+            "/@/*": [
+                // /から始まるようにします
+                "resources/*"
+            ]
+        },
+        "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    },
+    "include": [
+        "resources/**/*.ts",
+        "resources/**/*.tsx",
+        "resources/**/*.vue"
+    ],
+    "exclude": ["node_modules"]
+}

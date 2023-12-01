@@ -1,0 +1,52 @@
+# rsync -rltgoDvl --exclude-from=./sync_excludes ./ st01.hat.aws.human:~/hat
+# rsync -rltgoDvl --exclude-from=./sync_excludes ./ web01.hat.aws.human:~/hat
+# rsync -rltgoDvl --exclude-from=./tunag/sync_excludes ./tunag/ st01.iht.aws.human:~/hat
+# rsync -rltgoDvl --exclude-from=./tunag/sync_excludes ./tunag/ web01.iht.aws.human:~/hat
+
+# 本番用(間違ったブランチになっていないか確認すること) .gitの一つ上の階層で実行
+# rsync -rltgoDvl --exclude-from=./sync_excludes . web01.hat.aws.human:~/hat
+# ステージング用 .gitの一つ上の階層で実行
+# rsync -rltgoDvl --exclude-from=./sync_excludes . st01.hat.aws.human:~/hat
+
+sync_excludes
+.DS_Store
+.editorconfig
+.env
+.env.local
+.env.stg
+.env.prod
+.envrc
+.eslintrc
+.git
+.gitattributes
+.gitignore
+.vscode
+
+.styleci.yml
+docker-compose.yml
+
+phpunit.xml
+
+README.md
+coding-rule.md
+
+tsconfig.json
+package-lock.json
+package.json
+#composer.json
+
+#composer.lock
+
+webpack.mix.js
+
+node_modules/***
+tests/***
+storage
+storage/***
+bootstrap/cache/***
+
+php-cs-fixer
+php-cs-fixer.dist.php
+prettierrc
+
+public/**/*.map*
