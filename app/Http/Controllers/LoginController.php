@@ -23,13 +23,20 @@ class LoginController extends Controller
                 "message: Login Error,id: {$id}, error_code: {$errorCode}"
             );
             $request->session()->forget('login');
+
+            $companyCode = $request->route('companyCode');
+            $loginUrl = "/login";
+            if (!empty($companyCode)) {
+                $loginUrl = "/login/{$companyCode}";
+            }
+    
             switch ($errorCode) {
                 case '1000': // 必須パラメータエラー
                     $id = urlencode($id);
                     $password = urlencode($password);
                     $message = urlencode('認証に失敗しました');
                     return redirect(
-                        "/login?error_message={$message}&id={$id}&password={$password}"
+                        $loginUrl."?error_message={$message}&id={$id}&password={$password}"
                     );
                     break;
                 case '2015': // 対象サービスがマスタに未登録
@@ -37,7 +44,7 @@ class LoginController extends Controller
                     $password = urlencode($password);
                     $message = urlencode('認証に失敗しました');
                     return redirect(
-                        "/login?error_message={$message}&id={$id}&password={$password}"
+                        $loginUrl."?error_message={$message}&id={$id}&password={$password}"
                     );
                     break;
                 case '1004': // サーバ内部エラー
@@ -45,7 +52,7 @@ class LoginController extends Controller
                     $password = urlencode($password);
                     $message = urlencode('認証に失敗しました');
                     return redirect(
-                        "/login?error_message={$message}&id={$id}&password={$password}"
+                        $loginUrl."?error_message={$message}&id={$id}&password={$password}"
                     );
                     break;
                 case '2009': // 対象会員未存在
@@ -53,7 +60,7 @@ class LoginController extends Controller
                     $password = urlencode($password);
                     $message = urlencode('認証に失敗しました');
                     return redirect(
-                        "/login?error_message={$message}&id={$id}&password={$password}"
+                        $loginUrl."?error_message={$message}&id={$id}&password={$password}"
                     );
                     break;
                 case '2014': // 対象会員は仮会員
@@ -61,7 +68,7 @@ class LoginController extends Controller
                     $password = urlencode($password);
                     $message = urlencode('認証に失敗しました');
                     return redirect(
-                        "/login?error_message={$message}&id={$id}&password={$password}"
+                        $loginUrl."?error_message={$message}&id={$id}&password={$password}"
                     );
                     break;
                 default:
@@ -69,7 +76,7 @@ class LoginController extends Controller
                     $password = urlencode($password);
                     $message = urlencode('認証に失敗しました');
                     return redirect(
-                        "/login?error_message={$message}&id={$id}&password={$password}"
+                        $loginUrl."?error_message={$message}&id={$id}&password={$password}"
                     );
                     break;
             }
@@ -96,7 +103,11 @@ class LoginController extends Controller
         $company = Company::where('company_code', $companyCode)->first();
         if ($company) {
             if ($company->use_auth_platform) {
-                $ssoUrl = config('ha_sso_login_url');
+                if (config('app.ha_sso')) {
+                    $ssoUrl = config('app.ha_sso_login_url');
+                } else {
+                    $ssoUrl = URL::signedRoute('login');
+                }
             } else {
                 $ssoUrl = URL::signedRoute('login');
             }
@@ -124,19 +135,24 @@ class LoginController extends Controller
             'is_active' => 1
         ])->first();
 
+        $callbackUrl = '/callback';
+        if (strcmp(config('app.human_academy_company_code'), $companyCode) != 0) {
+            $callbackUrl = "/callback/{$companyCode}";
+        }
+
         if (empty($user)) {
             // ユーザが存在しない
-            return redirect("/callback?error_code=2009");
+            return redirect($callbackUrl."?error_code=2009");
         }
 
         if (strcmp($user->password, $password) != 0) {
             // パスワード不一致
-            return redirect("/callback?error_code=2009");
+            return redirect($callbackUrl."?error_code=2009");
         }
 
         if ($user->company->is_active != 1) {
             // 法人が無効
-            return redirect("/callback?error_code=2009");
+            return redirect($callbackUrl."?error_code=2009");
         }
 
         // セッション開始
@@ -153,7 +169,7 @@ class LoginController extends Controller
             'mailadd' => $user->mailadd,
         ]);
 
-        return redirect("/callback?error_code={$errorCode}");
+        return redirect($callbackUrl."?error_code={$errorCode}");
     }
     // NOTE: ローカル用認証基盤ログアウト処理
     public function logout(Request $request)

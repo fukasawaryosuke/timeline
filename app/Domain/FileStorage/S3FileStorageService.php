@@ -73,4 +73,17 @@ class S3FileStorageService implements IFileStorageService
         }
         return $filePath != '';
     }
+
+    /**
+     * S3からファイルを取得
+     *
+     * @param string $filePath
+     * @return string
+     */
+    public function getFile(string $filePath): string
+    {
+        $splitData = explode($this->bucketPath, $filePath);
+        $s3File = Storage::disk('s3')->get($this->bucketPath . $splitData[1]);
+        return $s3File;
+    }
 }

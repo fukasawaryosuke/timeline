@@ -19,6 +19,9 @@ use App\Domain\Human\IHumanService;
 use App\Domain\User\UserService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Storage;
+use App\Domain\FileStorage\IFileStorageService;
+use App\Models\Diary;
 
 class UserController extends Controller
 {
@@ -252,7 +255,7 @@ class UserController extends Controller
         return $res;
     }
 
-    public function getProfileIcon(Request $request, IHumanService $service)
+    public function getProfileIcon(Request $request, IHumanService $service, IFileStorageService $fileStorageService)
     {
         $userCompanyCode = UserService::getUserCompanyCode($request);
         $isHumanAcademy = Company::isHumanAcademy($userCompanyCode);
@@ -261,8 +264,14 @@ class UserController extends Controller
             //法人のコーポレートアイコンを表示
             $company = Company::where('company_code', $userCompanyCode)->first();
             $iconPath = $company->company_icon_path;
-            $fullIconPath = public_path($iconPath);
-            return response()->file($fullIconPath);
+
+            //開発環境の場合はpublic_pathを付与
+            if (app()->isLocal()) {
+                $fullIconPath = public_path($iconPath);
+                return response()->file($fullIconPath);
+            } else {
+                return $fileStorageService->getFile($iconPath);
+            }
         }
 
         // プロフィール画像URLを取得
@@ -287,11 +296,12 @@ class UserController extends Controller
         return [false, $res->status()];
     }
 
-    public function getUserName()
+    public function getUserName(Request $request)
     {
+        $userCompanyCode = UserService::getUserCompanyCode($request);
         $user = new User();
 
-        $users = $user->select('id', 'user_name')->get();
+        $users = $user->select('id', 'user_name')->where('company_code', $userCompanyCode)->get();
         return $users;
     }
 

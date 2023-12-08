@@ -20,8 +20,11 @@ class UserService
       $user =  User::select('company_code')
         ->where('human_id', $sessionUser['human_id'])
         ->first();
-
-      return $user->company_code;
+      if ($user) {
+        return $user->company_code;
+      } else {
+        return null;
+      }
     }
 
     return null;

@@ -26,6 +26,7 @@ class User extends Model
         'company_code',
         'password',
         'is_initial_password',
+        'is_initial_user',
         'is_active',
     ];
     protected $attributes = [
@@ -118,13 +119,19 @@ class User extends Model
 
     public function updateUser($formData)
     {
-        return $this->update([
+        $this->update([
             'user_name' => $formData['userName'],
             'mailadd' => $formData['mailadd'],
             'division_cd' => $formData['divisionCd'] ?? null,
             'is_active' => $formData['isActive'],
             'system_role_id' => $formData['systemRoleId'],
         ]);
+
+        $this->diary()->update([
+            'division_cd' => $formData['divisionCd'] ?? null,
+        ]);
+
+        return $this;
     }
 
     public function updatePassword($formData)

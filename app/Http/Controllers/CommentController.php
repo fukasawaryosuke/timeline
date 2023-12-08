@@ -186,6 +186,8 @@ class CommentController extends Controller
         Request $request,
         IStatisticsCsvService $service
     ) {
+        $userCompanyCode = UserService::getUserCompanyCode($request);
+
         // 一行目セット
         $csvList = [
             [
@@ -236,7 +238,7 @@ class CommentController extends Controller
 
         // 投稿数、コメントした回数、コメントされた回数をユーザーかつ制度かつ指定の日付ごとに集計
         foreach ($user_datas as $user_data) {
-            foreach (InHouseSystem::where('release_status', 1)->get() as $ihs) {
+            foreach (InHouseSystem::where('release_status', 1)->where('company_code', $userCompanyCode)->get() as $ihs) {
                 foreach ($date_list as $dl) {
                     $target_date = new StatisticsDate($dl, $filter);
                     $diary = $user_data->Diary->where(
